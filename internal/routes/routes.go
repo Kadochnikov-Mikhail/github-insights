@@ -8,4 +8,5 @@ import (
 
 func Setup(app *fiber.App) {
 	app.Get("/health", handlers.Health)
+	app.Get("/github", handlers.GetGitHubUser)
 }
