@@ -18,13 +18,44 @@ func GetUser(username string) (models.GitHubUser, error) {
 	defer response.Body.Close()
 
 	if response.StatusCode != http.StatusOK {
-		return models.GitHubUser{}, fmt.Errorf("%d GitHub API response status", response.StatusCode)
+		return models.GitHubUser{}, fmt.Errorf(
+			"github API returned status: %d",
+			response.StatusCode,
+		)
 	}
 
-	err = json.NewDecoder(response.Body).Decode(&user)
-
-	if err != nil {
+	if err := json.NewDecoder(response.Body).Decode(&user); err != nil {
 		return models.GitHubUser{}, err
 	}
 	return user, nil
+}
+
+func GetUserRepos(username string) ([]models.GitHubRepo, error) {
+
+	var repos []models.GitHubRepo
+
+	url := fmt.Sprintf(
+		"https://api.github.com/users/%s/repos",
+		username,
+	)
+
+	response, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+
+	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf(
+			"github API returned status: %d",
+			response.StatusCode,
+		)
+	}
+
+	if err := json.NewDecoder(response.Body).Decode(&repos); err != nil {
+		return nil, err
+	}
+
+	return repos, nil
 }
