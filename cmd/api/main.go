@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github-insights/internal/config"
 	"github-insights/internal/middleware"
 	"github-insights/internal/routes"
 
@@ -8,6 +9,9 @@ import (
 )
 
 func main() {
+
+	cfg := config.Load()
+
 	app := fiber.New(fiber.Config{
 		ErrorHandler: middleware.ErrorHandler,
 	})
@@ -16,7 +20,7 @@ func main() {
 
 	routes.Setup(app)
 
-	if err := app.Listen(":3000"); err != nil {
+	if err := app.Listen(":" + cfg.Port); err != nil {
 		panic(err)
 	}
 }
