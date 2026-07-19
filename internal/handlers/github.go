@@ -9,9 +9,23 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetGitHubUser(c *fiber.Ctx) error {
+type UserHandler struct {
+	service *services.UserService
+}
+
+func NewUserHandler(
+	service *services.UserService,
+) *UserHandler {
+	return &UserHandler{
+		service: service,
+	}
+}
+
+func (h *UserHandler) GetGitHubUser(c *fiber.Ctx) error {
 	username := c.Query("user")
-	user, err := services.GetUser(username)
+
+	user, err := h.service.GetUser(username)
+
 	if err != nil {
 		if errors.Is(err, apperror.ErrUsernameRequired) {
 			return c.Status(fiber.StatusBadRequest).JSON(

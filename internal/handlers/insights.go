@@ -6,10 +6,20 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetInsights(c *fiber.Ctx) error {
+type InsightsHandler struct {
+	service *services.InsightsService
+}
+
+func NewInsightsHandler(service *services.InsightsService) *InsightsHandler {
+	return &InsightsHandler{
+		service: service,
+	}
+}
+
+func (h *InsightsHandler) GetInsights(c *fiber.Ctx) error {
 	username := c.Query("user")
 
-	insights, err := services.GetInsights(username)
+	insights, err := h.service.GetInsights(username)
 	if err != nil {
 		return err
 	}

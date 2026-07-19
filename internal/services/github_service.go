@@ -6,10 +6,23 @@ import (
 	"github-insights/internal/models"
 )
 
-func GetUser(username string) (models.GitHubUser, error) {
+type UserService struct {
+	client client.GitHubClient
+}
+
+func NewUserService(
+	client client.GitHubClient,
+) *UserService {
+	return &UserService{
+		client: client,
+	}
+}
+
+func (s *UserService) GetUser(username string) (models.GitHubUser, error) {
+
 	if username == "" {
 		return models.GitHubUser{}, apperror.ErrUsernameRequired
 	}
 
-	return client.GetUser(username)
+	return s.client.GetUser(username)
 }

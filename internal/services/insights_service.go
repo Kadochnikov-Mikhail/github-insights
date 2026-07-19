@@ -6,13 +6,23 @@ import (
 	"github-insights/internal/models"
 )
 
-func GetInsights(username string) (models.GitHubInsights, error) {
+type InsightsService struct {
+	client client.GitHubClient
+}
+
+func NewInsightsService(client client.GitHubClient) *InsightsService {
+	return &InsightsService{
+		client: client,
+	}
+}
+
+func (s *InsightsService) GetInsights(username string) (models.GitHubInsights, error) {
 
 	if username == "" {
 		return models.GitHubInsights{}, apperror.ErrUsernameRequired
 	}
 
-	repos, err := client.GetUserRepos(username)
+	repos, err := s.client.GetUserRepos(username)
 	if err != nil {
 		return models.GitHubInsights{}, err
 	}
@@ -22,6 +32,7 @@ func GetInsights(username string) (models.GitHubInsights, error) {
 
 	for _, repo := range repos {
 		totalStars += repo.Stars
+
 		if repo.Language != "" {
 			languages[repo.Language]++
 		}
@@ -33,5 +44,4 @@ func GetInsights(username string) (models.GitHubInsights, error) {
 		TotalStars:   totalStars,
 		Languages:    languages,
 	}, nil
-
 }

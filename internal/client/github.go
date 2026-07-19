@@ -9,7 +9,14 @@ import (
 	"github-insights/internal/models"
 )
 
-func GetUser(username string) (models.GitHubUser, error) {
+type GitHubAPIClient struct {
+}
+
+func NewGitHubAPIClient() *GitHubAPIClient {
+	return &GitHubAPIClient{}
+}
+
+func (c *GitHubAPIClient) GetUser(username string) (models.GitHubUser, error) {
 	var user models.GitHubUser
 	response, err := httpClient.Get("https://api.github.com/users/" + username)
 	if err != nil {
@@ -35,7 +42,7 @@ func GetUser(username string) (models.GitHubUser, error) {
 	return user, nil
 }
 
-func GetUserRepos(username string) ([]models.GitHubRepo, error) {
+func (c *GitHubAPIClient) GetUserRepos(username string) ([]models.GitHubRepo, error) {
 
 	var repos []models.GitHubRepo
 

@@ -6,8 +6,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func Setup(app *fiber.App) {
+func Setup(
+	app *fiber.App,
+	userHandler *handlers.UserHandler,
+	insightsHandler *handlers.InsightsHandler,
+) {
 	app.Get("/health", handlers.Health)
-	app.Get("/github", handlers.GetGitHubUser)
-	app.Get("/github/insights", handlers.GetInsights)
+	app.Get("/github", userHandler.GetGitHubUser)
+	app.Get("/github/insights", insightsHandler.GetInsights)
 }
