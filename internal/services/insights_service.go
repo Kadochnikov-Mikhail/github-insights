@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github-insights/internal/apperror"
 	"github-insights/internal/client"
 	"github-insights/internal/models"
 )
@@ -8,7 +9,7 @@ import (
 func GetInsights(username string) (models.GitHubInsights, error) {
 
 	if username == "" {
-		return models.GitHubInsights{}, ErrUsernameRequired
+		return models.GitHubInsights{}, apperror.ErrUsernameRequired
 	}
 
 	repos, err := client.GetUserRepos(username)

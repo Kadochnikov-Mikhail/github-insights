@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github-insights/internal/apperror"
 	"github-insights/internal/models"
 )
 
@@ -16,6 +17,10 @@ func GetUser(username string) (models.GitHubUser, error) {
 	}
 
 	defer response.Body.Close()
+
+	if response.StatusCode == http.StatusNotFound {
+		return models.GitHubUser{}, apperror.ErrUserNotFound
+	}
 
 	if response.StatusCode != http.StatusOK {
 		return models.GitHubUser{}, fmt.Errorf(
@@ -45,6 +50,10 @@ func GetUserRepos(username string) ([]models.GitHubRepo, error) {
 	}
 
 	defer response.Body.Close()
+
+	if response.StatusCode == http.StatusNotFound {
+		return nil, apperror.ErrUserNotFound
+	}
 
 	if response.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf(

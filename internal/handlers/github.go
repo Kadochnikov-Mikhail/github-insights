@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github-insights/internal/apperror"
 	"github-insights/internal/models"
 	"github-insights/internal/services"
 
@@ -12,7 +13,7 @@ func GetGitHubUser(c *fiber.Ctx) error {
 	username := c.Query("user")
 	user, err := services.GetUser(username)
 	if err != nil {
-		if errors.Is(err, services.ErrUsernameRequired) {
+		if errors.Is(err, apperror.ErrUsernameRequired) {
 			return c.Status(fiber.StatusBadRequest).JSON(
 				models.ErrorResponse{
 					Error: err.Error(),
