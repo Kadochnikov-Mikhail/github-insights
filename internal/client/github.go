@@ -11,7 +11,7 @@ import (
 
 func GetUser(username string) (models.GitHubUser, error) {
 	var user models.GitHubUser
-	response, err := http.Get("https://api.github.com/users/" + username)
+	response, err := httpClient.Get("https://api.github.com/users/" + username)
 	if err != nil {
 		return models.GitHubUser{}, err
 	}
@@ -44,7 +44,7 @@ func GetUserRepos(username string) ([]models.GitHubRepo, error) {
 		username,
 	)
 
-	response, err := http.Get(url)
+	response, err := httpClient.Get(url)
 	if err != nil {
 		return nil, err
 	}
