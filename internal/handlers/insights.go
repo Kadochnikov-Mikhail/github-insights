@@ -1,16 +1,20 @@
 package handlers
 
 import (
-	"github-insights/internal/services"
+	"github-insights/internal/models"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-type InsightsHandler struct {
-	service *services.InsightsService
+type InsightsService interface {
+	GetInsights(username string) (models.GitHubInsights, error)
 }
 
-func NewInsightsHandler(service *services.InsightsService) *InsightsHandler {
+type InsightsHandler struct {
+	service InsightsService
+}
+
+func NewInsightsHandler(service InsightsService) *InsightsHandler {
 	return &InsightsHandler{
 		service: service,
 	}

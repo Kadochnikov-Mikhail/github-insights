@@ -10,15 +10,24 @@ import (
 )
 
 type GitHubAPIClient struct {
+	BaseURL string
 }
 
 func NewGitHubAPIClient() *GitHubAPIClient {
-	return &GitHubAPIClient{}
+	return &GitHubAPIClient{
+		BaseURL: "https://api.github.com",
+	}
 }
 
 func (c *GitHubAPIClient) GetUser(username string) (models.GitHubUser, error) {
 	var user models.GitHubUser
-	response, err := httpClient.Get("https://api.github.com/users/" + username)
+	url := fmt.Sprintf(
+		"%s/users/%s",
+		c.BaseURL,
+		username,
+	)
+
+	response, err := httpClient.Get(url)
 	if err != nil {
 		return models.GitHubUser{}, err
 	}
@@ -47,7 +56,8 @@ func (c *GitHubAPIClient) GetUserRepos(username string) ([]models.GitHubRepo, er
 	var repos []models.GitHubRepo
 
 	url := fmt.Sprintf(
-		"https://api.github.com/users/%s/repos",
+		"%s/users/%s/repos",
+		c.BaseURL,
 		username,
 	)
 

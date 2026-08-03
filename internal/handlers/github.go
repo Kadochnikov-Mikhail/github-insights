@@ -3,18 +3,21 @@ package handlers
 import (
 	"github-insights/internal/apperror"
 	"github-insights/internal/models"
-	"github-insights/internal/services"
 
 	"errors"
 	"github.com/gofiber/fiber/v2"
 )
 
+type UserService interface {
+	GetUser(username string) (models.GitHubUser, error)
+}
+
 type UserHandler struct {
-	service *services.UserService
+	service UserService
 }
 
 func NewUserHandler(
-	service *services.UserService,
+	service UserService,
 ) *UserHandler {
 	return &UserHandler{
 		service: service,

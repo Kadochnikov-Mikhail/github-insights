@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+	
 	"github-insights/internal/client"
 	"github-insights/internal/config"
 	"github-insights/internal/handlers"
@@ -45,7 +47,5 @@ func main() {
 		insightsHandler,
 	)
 
-	if err := app.Listen(":" + cfg.Port); err != nil {
-		panic(err)
-	}
+	log.Fatal(app.Listen(":" + cfg.Port))
 }
