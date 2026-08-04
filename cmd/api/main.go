@@ -2,9 +2,10 @@ package main
 
 import (
 	"log"
-	
+
 	"github-insights/internal/client"
 	"github-insights/internal/config"
+	"github-insights/internal/database"
 	"github-insights/internal/handlers"
 	"github-insights/internal/middleware"
 	"github-insights/internal/routes"
@@ -16,6 +17,13 @@ import (
 func main() {
 
 	cfg := config.Load()
+
+	db, err := database.Connect(cfg.DatabaseURL)
+	if err != nil {
+		panic(err)
+	}
+
+	defer db.Close()
 
 	app := fiber.New(fiber.Config{
 		ErrorHandler: middleware.ErrorHandler,

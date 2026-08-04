@@ -7,8 +7,9 @@ import (
 )
 
 type Config struct {
-	Port      string
-	GitHubAPI string
+	Port        string
+	GitHubAPI   string
+	DatabaseURL string
 }
 
 func Load() Config {
@@ -18,7 +19,8 @@ func Load() Config {
 	}
 
 	return Config{
-		Port:      os.Getenv("PORT"),
-		GitHubAPI: os.Getenv("GITHUB_API_URL"),
+		Port:        os.Getenv("PORT"),
+		GitHubAPI:   os.Getenv("GITHUB_API_URL"),
+		DatabaseURL: os.Getenv("DATABASE_URL"),
 	}
 }
