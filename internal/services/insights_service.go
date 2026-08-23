@@ -4,15 +4,21 @@ import (
 	"github-insights/internal/apperror"
 	"github-insights/internal/client"
 	"github-insights/internal/models"
+	"github-insights/internal/repository"
 )
 
 type InsightsService struct {
 	client client.GitHubClient
+	repo   repository.InsightsRepository
 }
 
-func NewInsightsService(client client.GitHubClient) *InsightsService {
+func NewInsightsService(
+	client client.GitHubClient,
+	repo repository.InsightsRepository,
+) *InsightsService {
 	return &InsightsService{
 		client: client,
+		repo:   repo,
 	}
 }
 
@@ -38,10 +44,16 @@ func (s *InsightsService) GetInsights(username string) (models.GitHubInsights, e
 		}
 	}
 
-	return models.GitHubInsights{
+	insights := models.GitHubInsights{
 		Username:     username,
 		Repositories: len(repos),
 		TotalStars:   totalStars,
 		Languages:    languages,
-	}, nil
+	}
+	err = s.repo.Save(insights)
+	if err != nil {
+		return models.GitHubInsights{}, err
+	}
+
+	return insights, nil
 }

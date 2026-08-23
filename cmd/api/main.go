@@ -10,6 +10,7 @@ import (
 	"github-insights/internal/middleware"
 	"github-insights/internal/routes"
 	"github-insights/internal/services"
+	"github-insights/internal/repository"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -22,6 +23,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	insightsRepo := repository.NewInsightsRepository(db)
 
 	defer db.Close()
 
@@ -39,6 +41,7 @@ func main() {
 
 	insightsService := services.NewInsightsService(
 		githubClient,
+		insightsRepo,
 	)
 
 	userHandler := handlers.NewUserHandler(

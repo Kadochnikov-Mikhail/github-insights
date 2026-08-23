@@ -8,6 +8,16 @@ import (
 	"github-insights/internal/models"
 )
 
+type MockInsightsRepository struct {
+	Insight models.GitHubInsights
+	Err     error
+}
+
+func (m *MockInsightsRepository) Save(insight models.GitHubInsights) error {
+	m.Insight = insight
+	return m.Err
+}
+
 func TestGetInsightsSuccess(t *testing.T) {
 
 	client := MockGitHubClient{
@@ -30,7 +40,9 @@ func TestGetInsightsSuccess(t *testing.T) {
 		},
 	}
 
-	service := NewInsightsService(client)
+	repo := &MockInsightsRepository{}
+
+	service := NewInsightsService(client, repo)
 
 	insights, err := service.GetInsights("torvalds")
 
@@ -70,7 +82,9 @@ func TestGetInsightsClientError(t *testing.T) {
 		Err: errors.New("github api error"),
 	}
 
-	service := NewInsightsService(client)
+	repo := &MockInsightsRepository{}
+
+	service := NewInsightsService(client, repo)
 
 	_, err := service.GetInsights("torvalds")
 
@@ -83,7 +97,9 @@ func TestGetInsightsEmptyUsername(t *testing.T) {
 
 	client := MockGitHubClient{}
 
-	service := NewInsightsService(client)
+	repo := &MockInsightsRepository{}
+
+	service := NewInsightsService(client, repo)
 
 	_, err := service.GetInsights("")
 
@@ -92,6 +108,53 @@ func TestGetInsightsEmptyUsername(t *testing.T) {
 			"expected %v, got %v",
 			apperror.ErrUsernameRequired,
 			err,
+		)
+	}
+}
+
+func TestGetInsightsSavesToRepository(t *testing.T) {
+	client := MockGitHubClient{
+		Repos: []models.GitHubRepo{
+			{
+				Name:     "repo1",
+				Stars:    10,
+				Language: "Go",
+			},
+			{
+				Name:     "repo2",
+				Stars:    5,
+				Language: "Go",
+			},
+		},
+	}
+
+	repo := &MockInsightsRepository{}
+
+	service := NewInsightsService(client, repo)
+
+	_, err := service.GetInsights("torvalds")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if repo.Insight.Username != "torvalds" {
+		t.Errorf(
+			"expected username torvalds, got %s",
+			repo.Insight.Username,
+		)
+	}
+
+	if repo.Insight.Repositories != 2 {
+		t.Errorf(
+			"expected 2 repositories, got %d",
+			repo.Insight.Repositories,
+		)
+	}
+
+	if repo.Insight.TotalStars != 15 {
+		t.Errorf(
+			"expected 15 stars, got %d",
+			repo.Insight.TotalStars,
 		)
 	}
 }
