@@ -8,17 +8,17 @@ import (
 )
 
 type InsightsService struct {
-	client client.GitHubClient
-	repo   repository.InsightsRepository
+	client     client.GitHubClient
+	repository repository.InsightsRepository
 }
 
 func NewInsightsService(
 	client client.GitHubClient,
-	repo repository.InsightsRepository,
+	repository repository.InsightsRepository,
 ) *InsightsService {
 	return &InsightsService{
-		client: client,
-		repo:   repo,
+		client:     client,
+		repository: repository,
 	}
 }
 
@@ -50,10 +50,22 @@ func (s *InsightsService) GetInsights(username string) (models.GitHubInsights, e
 		TotalStars:   totalStars,
 		Languages:    languages,
 	}
-	err = s.repo.Save(insights)
+	err = s.repository.Save(insights)
+
 	if err != nil {
 		return models.GitHubInsights{}, err
 	}
 
 	return insights, nil
+}
+
+func (s *InsightsService) GetInsightsHistory(
+	username string,
+) ([]models.GitHubInsights, error) {
+
+	if username == "" {
+		return nil, apperror.ErrUsernameRequired
+	}
+
+	return s.repository.GetByUsername(username)
 }

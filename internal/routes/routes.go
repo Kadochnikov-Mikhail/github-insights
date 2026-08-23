@@ -14,4 +14,5 @@ func Setup(
 	app.Get("/health", handlers.Health)
 	app.Get("/github", userHandler.GetGitHubUser)
 	app.Get("/github/insights", insightsHandler.GetInsights)
+	app.Get("/github/insights/history", insightsHandler.GetInsightsHistory)
 }

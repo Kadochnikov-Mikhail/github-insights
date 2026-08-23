@@ -18,6 +18,20 @@ func (m *MockInsightsRepository) Save(insight models.GitHubInsights) error {
 	return m.Err
 }
 
+func (m *MockInsightsRepository) GetByUsername(
+	username string,
+) ([]models.GitHubInsights, error) {
+	if m.Err != nil {
+		return nil, m.Err
+	}
+
+	if m.Insight.Username == username {
+		return []models.GitHubInsights{m.Insight}, nil
+	}
+
+	return []models.GitHubInsights{}, nil
+}
+
 func TestGetInsightsSuccess(t *testing.T) {
 
 	client := MockGitHubClient{

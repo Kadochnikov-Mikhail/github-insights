@@ -31,6 +31,18 @@ func (m MockInsightsService) GetInsights(username string) (models.GitHubInsights
 	}, nil
 }
 
+func (m MockInsightsServiceError) GetInsightsHistory(
+	username string,
+) ([]models.GitHubInsights, error) {
+	return nil, errors.New("service error")
+}
+
+func (m MockInsightsService) GetInsightsHistory(
+	username string,
+) ([]models.GitHubInsights, error) {
+	return []models.GitHubInsights{}, nil
+}
+
 func TestGetInsightsSuccess(t *testing.T) {
 
 	app := fiber.New()
@@ -132,4 +144,3 @@ func TestHealth(t *testing.T) {
 		)
 	}
 }
-

@@ -8,6 +8,7 @@ import (
 
 type InsightsService interface {
 	GetInsights(username string) (models.GitHubInsights, error)
+	GetInsightsHistory(username string) ([]models.GitHubInsights, error)
 }
 
 type InsightsHandler struct {
@@ -24,6 +25,17 @@ func (h *InsightsHandler) GetInsights(c *fiber.Ctx) error {
 	username := c.Query("user")
 
 	insights, err := h.service.GetInsights(username)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(insights)
+}
+
+func (h *InsightsHandler) GetInsightsHistory(c *fiber.Ctx) error {
+	username := c.Query("user")
+
+	insights, err := h.service.GetInsightsHistory(username)
 	if err != nil {
 		return err
 	}
