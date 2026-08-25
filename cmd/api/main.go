@@ -13,6 +13,7 @@ import (
 	"github-insights/internal/repository"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func main() {
@@ -30,6 +31,7 @@ func main() {
 	app := fiber.New(fiber.Config{
 		ErrorHandler: middleware.ErrorHandler,
 	})
+	app.Use(cors.New())
 
 	app.Use(middleware.Logger)
 
