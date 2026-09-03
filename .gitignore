@@ -13,4 +13,23 @@
 
 # OS
 .DS_Store
+Thumbs.db# Node
+node_modules/
+dist/
+
+# Environment
+.env
+
+# Go
+/bin/
+*.exe
+*.test
+*.out
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
 Thumbs.db
