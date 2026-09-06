@@ -15,20 +15,43 @@ jobs:
     name: Backend CI
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: github_insights_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U admin -d github_insights_test"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     defaults:
       run:
         working-directory: backend
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: '1.26.2'
           cache: true
           cache-dependency-path: backend/go.sum
+
+      - name: Create database schema
+        run: |
+          PGPASSWORD=password psql \
+            -h localhost \
+            -U admin \
+            -d github_insights_test \
+            -f migrations/001_create_github_insights.sql
 
       - name: Run tests
         run: go test ./...
@@ -49,19 +72,19 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          cache: 'pnpm'
-          cache-dependency-path: frontend/pnpm-lock.yaml
+        uses: actions/checkout@v5
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
