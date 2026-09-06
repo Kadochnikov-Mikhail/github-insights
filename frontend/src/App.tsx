@@ -1,59 +1,59 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
-import Header from './components/Header'
-import SearchForm from './components/SearchForm'
-import ProfileHeader from './components/ProfileHeader'
-import Stats from './components/Stats'
-import Languages from './components/Languages'
-import Features from './components/Features'
-import Footer from './components/Footer'
+import Header from "./components/Header";
+import SearchForm from "./components/SearchForm";
+import ProfileHeader from "./components/ProfileHeader";
+import Stats from "./components/Stats";
+import Languages from "./components/Languages";
+import Features from "./components/Features";
+import Footer from "./components/Footer";
 
 type Insights = {
-  username: string
-  repositories: number
-  total_stars: number
+  username: string;
+  repositories: number;
+  total_stars: number;
   languages: {
-    [language: string]: number
-  }
-  created_at: string
-}
+    [language: string]: number;
+  };
+  created_at: string;
+};
 
 function App() {
-  const [username, setUsername] = useState('')
-  const [insights, setInsights] = useState<Insights | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [username, setUsername] = useState("");
+  const [insights, setInsights] = useState<Insights | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleAnalyze() {
     if (!username.trim()) {
-      setError('username is required')
-      return
+      setError("username is required");
+      return;
     }
 
-    const trimmedUsername = username.trim()
+    const trimmedUsername = username.trim();
 
-    setError(null)
-    setInsights(null)
-    setLoading(true)
+    setError(null);
+    setInsights(null);
+    setLoading(true);
 
     try {
       const response = await fetch(
-        `http://localhost:3000/github/insights?user=${trimmedUsername}`,
-      )
+        `/api/github/insights?user=${encodeURIComponent(trimmedUsername)}`,
+      );
 
       if (!response.ok) {
-        setError('Failed to fetch GitHub data')
-        return
+        setError("Failed to fetch GitHub data");
+        return;
       }
 
-      const data = await response.json()
+      const data = await response.json();
 
-      setInsights(data)
+      setInsights(data);
     } catch {
-      setError('Something went wrong')
+      setError("Something went wrong");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -68,13 +68,12 @@ function App() {
         </div>
 
         <h2 className="hero-title">
-          Understand your GitHub activity{' '}
-          <span>at a glance</span>
+          Understand your GitHub activity <span>at a glance</span>
         </h2>
 
         <p className="hero-description">
-          Enter a GitHub username to explore repositories, stars, languages,
-          and the momentum behind your work.
+          Enter a GitHub username to explore repositories, stars, languages, and
+          the momentum behind your work.
         </p>
 
         {error && <p className="hero-error">{error}</p>}
@@ -109,7 +108,7 @@ function App() {
       <Features />
       <Footer />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

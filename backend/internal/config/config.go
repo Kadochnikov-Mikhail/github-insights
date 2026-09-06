@@ -1,26 +1,23 @@
 package config
 
 import (
-	"os"
+    "os"
 
-	"github.com/joho/godotenv"
+    "github.com/joho/godotenv"
 )
 
 type Config struct {
-	Port        string
-	GitHubAPI   string
-	DatabaseURL string
+    Port        string
+    GitHubAPI   string
+    DatabaseURL string
 }
 
 func Load() Config {
-	err := godotenv.Load()
-	if err != nil {
-		panic("Error loading .env")
-	}
+    _ = godotenv.Load()
 
-	return Config{
-		Port:        os.Getenv("PORT"),
-		GitHubAPI:   os.Getenv("GITHUB_API_URL"),
-		DatabaseURL: os.Getenv("DATABASE_URL"),
-	}
+    return Config{
+        Port:        os.Getenv("PORT"),
+        GitHubAPI:   os.Getenv("GITHUB_API_URL"),
+        DatabaseURL: os.Getenv("DATABASE_URL"),
+    }
 }
