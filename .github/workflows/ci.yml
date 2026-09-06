@@ -51,7 +51,7 @@ jobs:
             -h localhost \
             -U admin \
             -d github_insights_test \
-            -f migrations/001_create_github_insights.sql
+            -f migrations/001_create_github_insights.up.sql
 
       - name: Run tests
         run: go test ./...
