@@ -114,4 +114,9 @@ jobs:
               cd /opt/github-insights
               git pull origin master
               docker compose up -d --build
+
+              docker exec -i github-postgres \
+                psql -U admin -d github_insights \
+                < backend/migrations/001_create_github_insights.up.sql
+
               docker compose ps
