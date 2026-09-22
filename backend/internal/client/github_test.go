@@ -6,8 +6,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github-insights/internal/models"
 	"github-insights/internal/apperror"
+	"github-insights/internal/models"
 )
 
 func TestGetUserSuccess(t *testing.T) {

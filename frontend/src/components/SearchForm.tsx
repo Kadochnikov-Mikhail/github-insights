@@ -43,8 +43,8 @@ function SearchForm({
             value={username}
             onChange={(event) => setUsername(event.target.value)}
             onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                onAnalyze()
+              if (event.key === "Enter") {
+                onAnalyze();
               }
             }}
           />
@@ -70,14 +70,14 @@ function SearchForm({
       </div>
 
       <p className="search-hint">
-        Try{' '}
-        <button type="button" onClick={() => setUsername('octocat')}>
+        Try{" "}
+        <button type="button" onClick={() => setUsername("octocat")}>
           octocat
-        </button>{' '}
+        </button>{" "}
         to see a sample analysis
       </p>
     </div>
-  )
+  );
 }
 
-export default SearchForm
+export default SearchForm;

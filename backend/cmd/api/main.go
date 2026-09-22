@@ -8,9 +8,9 @@ import (
 	"github-insights/internal/database"
 	"github-insights/internal/handlers"
 	"github-insights/internal/middleware"
+	"github-insights/internal/repository"
 	"github-insights/internal/routes"
 	"github-insights/internal/services"
-	"github-insights/internal/repository"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"

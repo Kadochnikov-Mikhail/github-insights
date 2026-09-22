@@ -7,8 +7,8 @@ function Features() {
         <h2>Everything you need to understand your GitHub</h2>
 
         <p>
-          Get a clear picture of your repositories, technology stack,
-          and development activity.
+          Get a clear picture of your repositories, technology stack, and
+          development activity.
         </p>
       </div>
 
@@ -38,8 +38,8 @@ function Features() {
           <h3>Repository analysis</h3>
 
           <p>
-            See your total repositories and understand the scale of
-            your GitHub activity.
+            See your total repositories and understand the scale of your GitHub
+            activity.
           </p>
         </div>
 
@@ -76,8 +76,8 @@ function Features() {
           <h3>Language statistics</h3>
 
           <p>
-            Discover which programming languages make up your
-            development portfolio.
+            Discover which programming languages make up your development
+            portfolio.
           </p>
         </div>
 
@@ -108,8 +108,8 @@ function Features() {
           <h3>Historical statistics</h3>
 
           <p>
-            Track how your GitHub activity changes over time as your
-            project grows.
+            Track how your GitHub activity changes over time as your project
+            grows.
           </p>
         </div>
       </div>

@@ -66,9 +66,7 @@ function Languages({ languages, totalRepositories }: LanguagesProps) {
                 {lang}
               </span>
 
-              <span className="language-percent">
-                {percent.toFixed(1)}%
-              </span>
+              <span className="language-percent">{percent.toFixed(1)}%</span>
             </div>
           );
         })}

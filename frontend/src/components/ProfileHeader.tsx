@@ -6,9 +6,7 @@ function ProfileHeader({ username }: ProfileHeaderProps) {
   return (
     <div className="profile-header">
       <div className="profile-info">
-        <div className="profile-avatar">
-          {username.charAt(0).toUpperCase()}
-        </div>
+        <div className="profile-avatar">{username.charAt(0).toUpperCase()}</div>
 
         <div>
           <h2>{username}</h2>
